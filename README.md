@@ -6,7 +6,7 @@ python client for Pexel images
 ```python
 >>> from pexelpie import PexelClient
 
->>> client = PexelClient(api_key='your_ip_key_here')
+>>> client = PexelClient(api_key='your_api_key_here')
 
 >>> results = client.search(['apple', 'technology', 'macos'], search_type='photo')
 

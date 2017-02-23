@@ -12,21 +12,21 @@ python client for Pexel images
 
 ```
 
-### get all the urls from our search results
+get all the urls from our search results
 ```python
 >>> urls = [photo.url for photo in results]
 ```
-### get the high res original from a single result
+get the high res original from a single result
 ```python
 >>> single_image = results[0]
 
 >>> original = single_image.original
 ```
-### or get a low res preview
+or get a low res preview
 ```python
 >>> preview = single_image.preview
 ```
-### alternatively get a list of all the image sources
+alternatively get a list of all the image sources
 ```python
 >>> sources = single_image.sources
 ```

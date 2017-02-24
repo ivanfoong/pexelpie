@@ -61,11 +61,13 @@ class PexelClient(object):
                 headers=header
             )
             return PexelSearchResult(
-                search_type='photo', response=response.json())
+                search_type='photo', response=response.json(),
+                keywords=keywords)
         else:
             response = self._session.get(
                 self.default_video_url, params=params,
                 headers=header
             )
-            print response
-            return PexelSearchResult(search_type='video', response=response.json())
+            return PexelSearchResult(
+                search_type='video',response=response.json(),
+                keywords=keywords)

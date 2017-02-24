@@ -53,7 +53,7 @@ class PexelPhoto(object):
         self.url = self.photo_result['url']
 
     @property
-    def best_quality(self):
+    def original(self):
         photos = self.photo_result['src']
         return photos['original']
 
@@ -62,6 +62,16 @@ class PexelPhoto(object):
         photos = self.photo_result['src']
         return photos['tiny']
 
+    @property
+    def sources(self):
+        """
+        Get all the various image sources.
+        Returns:
+            list of strings
+        """
+        sources = self.photo_result['src']
+        return sources.values()
+
 
 class PexelSearchResult(object):
     """
@@ -69,10 +79,14 @@ class PexelSearchResult(object):
         response(json):
             decoded json response
     """
-    def __init__(self, search_type, response):
+    def __init__(self, search_type, response, keywords):
+        self._current = 0
+        self._results = []
         self.search_type = search_type
         self.response = response
+        self.keywords = keywords
         self.page = self.response['page']
+        self._set_results()
 
     def next_page(self):
         """
@@ -84,14 +98,33 @@ class PexelSearchResult(object):
         """
         pass
 
-    @property
-    def results(self):
+    def __getitem__(self, key):
+        return self._results[key]
+
+    def __str__(self):
+        return 'Search results for: {}, page: {} search_type: {}'.format(
+            self.keywords, self.page, self.search_type)
+
+    def __repr__(self):
+        return "PexelSearchResult(search_type='{}', keywords={})".format(
+            self.search_type, self.keywords)
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self._current > len(self._results) - 1:
+            raise StopIteration
+        else:
+            item = self._results[self._current]
+            self._current += 1
+            return item
+
+    def _set_results(self):
         """
         Returns the results of the search
         """
-        if self.search_type=='photo':
-            photos = [PexelPhoto(i) for i in self.response['photos']]
-            return photos
+        if self.search_type == 'photo':
+            self._results = [PexelPhoto(i) for i in self.response['photos']]
         else:
-            videos = [PexelVideo(i) for i in self.response['videos']]
-            return videos
+            self._results = [PexelVideo(i) for i in self.response['videos']]

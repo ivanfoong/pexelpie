@@ -13,7 +13,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='pexelpie',
-    version='0.0.0.1',
+    version='0.0.1.0',
     description='python client for Pexel images',
     author='Peter Nilson',
     author_email='petenilson@gmail.com',

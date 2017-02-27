@@ -4,6 +4,9 @@ Peter Nilson 2017 -- http://www.github.com/petenilson
 """
 import json
 
+class PexelVideoException(Exception):
+    pass
+
 
 class PexelVideo(object):
     """
@@ -33,20 +36,23 @@ class PexelVideo(object):
         )
 
     @property
-    def preview(self):
+    def mobile(self):
         """
         The 'preview' returned is actually the mobile version of video
-        in question. While the video is not infact preview quality, 
+        in question. While the video is not infact preview quality,
         'preview' has been used for the sake of keeping this API consistent.
         """
         video_files = self.video_result['video_files']
-        video_files = sorted(video_files, key=lambda x: x['width'])
-        preview_quality = video_files[0]
-        return dict(
-            url=preview_quality['link'],
-            width=preview_quality['width'],
-            height=preview_quality['height']
-        )
+        try:
+            mobile = filter(lambda x: x['quality'] == 'mobile', video_files)[0]
+        except IndexError:
+            return None
+        else:
+            return dict(
+                url=mobile['link'],
+                width=mobile['width'],
+                height=mobile['height']
+            )
 
     @property
     def preview_images(self):

@@ -8,7 +8,7 @@ python client for Pexel images
 
 >>> client = PexelClient(api_key='your_api_key_here')
 
->>> results = client.search(['apple', 'technology', 'macos'], search_type='photo')
+>>> results = client.search(['apple', 'technology'], search_type='photo')
 
 ```
 
@@ -29,4 +29,17 @@ or get a low res preview
 alternatively get a list of all the image sources
 ```python
 >>> sources = single_image.sources
+```
+if your search type was for videos then you get back a PexelVideo object
+```python
+>>> results = client.search(['apple', 'technology'], search_type='video')
+
+>>> single_video = results[0]
+
+>>> hd_video = single_video.best_quality
+
+```
+or get a list of still to use as a video preview
+```python
+>>> preview_images = single_video.preview_images
 ```

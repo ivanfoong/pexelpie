@@ -42,7 +42,7 @@ class PexelClient(object):
             page(int):
                 which page number to return
         Returns:
-            a search result object
+            a PexelSearchResult object
         """
         if search_type not in ['video', 'photo']:
             raise PexelClientException('Invalid search_type given')

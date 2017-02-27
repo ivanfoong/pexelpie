@@ -4,6 +4,7 @@ Peter Nilson 2017 -- http://www.github.com/petenilson
 """
 import json
 
+
 class PexelVideo(object):
     """
     A data structure to represent a single video returned
@@ -18,8 +19,9 @@ class PexelVideo(object):
     @property
     def best_quality(self):
         """
-        Returns the highest possible resolution.
-        Resolution is measured as the width of the video.
+        Returns the highest possible resolution. There appears to be
+        multiple keys named 'hd' within 'video_files, hence the sorting
+        based on the image size.
         """
         video_files = self.video_result['video_files']
         video_files = sorted(video_files, key=lambda x: x['width'], reverse=True)
@@ -28,6 +30,22 @@ class PexelVideo(object):
             url=best_quality['link'],
             width=best_quality['width'],
             height=best_quality['height']
+        )
+
+    @property
+    def preview(self):
+        """
+        The 'preview' returned is actually the mobile version of video
+        in question. While the video is not infact preview quality, 
+        'preview' has been used for the sake of keeping this API consistent.
+        """
+        video_files = self.video_result['video_files']
+        video_files = sorted(video_files, key=lambda x: x['width'])
+        preview_quality = video_files[0]
+        return dict(
+            url=preview_quality['link'],
+            width=preview_quality['width'],
+            height=preview_quality['height']
         )
 
     @property
@@ -53,7 +71,7 @@ class PexelPhoto(object):
         self.url = self.photo_result['url']
 
     @property
-    def original(self):
+    def best_quality(self):
         photos = self.photo_result['src']
         return photos['original']
 
@@ -113,7 +131,7 @@ class PexelSearchResult(object):
         return self
 
     def next(self):
-        if self._current > len(self._results) - 1:
+        if self._current > (len(self._results) - 1):
             raise StopIteration
         else:
             item = self._results[self._current]

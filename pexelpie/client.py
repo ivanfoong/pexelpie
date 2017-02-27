@@ -29,10 +29,9 @@ class PexelClient(object):
         # Instantiate API credentials
 
         if not self.api_key:
-            raise PexelClientException(
-                'Not API key provided to client')
+            raise PexelClientException('Not API key provided to client')
 
-    def search(self, keywords, search_type='photo', per_page=15, page=1):
+    def search(self, keywords, search_type='photo', per_page=20, page=1):
         """
         Inputs:
             search_type(str):

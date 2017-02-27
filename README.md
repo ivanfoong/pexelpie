@@ -20,7 +20,7 @@ get the high res original from a single result
 ```python
 >>> single_image = results[0]
 
->>> original = single_image.original
+>>> original = single_image.best_quality
 ```
 or get a low res preview
 ```python
